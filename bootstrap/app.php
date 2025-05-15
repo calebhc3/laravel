@@ -3,6 +3,11 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\RoleMiddleware;
+
+Route::middleware([RoleMiddleware::class.':admin'])->get('/admin-only', function () {
+    return 'Acesso liberado';
+});
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
