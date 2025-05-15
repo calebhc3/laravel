@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\ResetPasswordController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AdminController;
+use Illuminate\Http\Request;
 
 Route::middleware('auth:sanctum')->get('/me', function () {
     return request()->user();
@@ -13,6 +14,14 @@ Route::middleware('auth:sanctum')->get('/me', function () {
 
 Route::middleware(['auth:sanctum'])->get('/users', function () {
     return \App\Models\User::paginate(10);
+});
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/me', function (Request $request) {
+        return $request->user();
+    });
 });
 
 Route::post('/register', [UserController::class, 'store']);

@@ -3,30 +3,24 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\LoginRequest;
-use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-    public function login(LoginRequest $request): JsonResponse
+    public function login(Request $request)
     {
-        $credentials = $request->validated();
+        $credentials = $request->only('email', 'password');
 
         if (!Auth::attempt($credentials)) {
             return response()->json(['message' => 'Credenciais inválidas'], 401);
         }
 
         $user = Auth::user();
-        $token = $user->createToken('access-token')->plainTextToken;
+        $token = $user->createToken('api-token')->plainTextToken;
 
         return response()->json([
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-            ],
+            'user' => $user,
             'token' => $token,
         ]);
     }
