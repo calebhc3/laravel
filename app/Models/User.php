@@ -22,7 +22,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'role',
+        'cep',
+        'numero',
+        'rua',
+        'bairro',
+        'cidade',
+        'estado',
     ];
 
     /**
